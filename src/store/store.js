@@ -26,6 +26,10 @@ const store = new Vuex.Store({
     // ifLogined:(localStorage.getItem("member_id"))?true : false,
     loading:false,
     activeRoute:'首页', //导航显示路由名字
+    TotalPrice:0,
+    ChoosedProduction:[],
+    
+
     step:2,
     CurApplication:'',//当前应用
     CurProduction:'',//当前产品
@@ -101,6 +105,11 @@ const store = new Vuex.Store({
     [types.ROUTE_CHANGE](state,data){
       state.activeRoute = data.activeRoute
     },
+    [types.T_PRICE_CHANGE](state,data){
+      state.TotalPrice = data.TotalPrice
+    },
+
+
     [types.MESSAGECOUNT_CHANGE](state,data){
       state.MessageCount = data.messageCount
     },

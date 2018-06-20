@@ -5,6 +5,10 @@ export const SPINNERCLASS = 'SPINNER_CLASS'
 
 /*Mutations Type*/
 export const ROUTE_CHANGE = 'ROUTE_CHANGE'
+export const T_PRICE_CHANGE = 'T_PRICE_CHANGE'
+
+
+
 export const MESSAGECOUNT_CHANGE = 'MESSAGECOUNT_CHANGE'
 export const TOAST_TOGGLE = 'TOAST_TOGGLE'
 export const TIPS_TOGGLE = 'TIPS_TOGGLE'

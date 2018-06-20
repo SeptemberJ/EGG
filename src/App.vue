@@ -6,7 +6,8 @@
 </div>
 </template>
 <script>
-
+import Vue from 'vue'
+import axios from 'axios'
   export default{
     data: function () {
       return {
@@ -17,10 +18,6 @@
       
     },
     created: function () {
-      this.$Message.config({
-          top: 82,
-          duration: 1.5
-      });
       
     },
     computed: {
