@@ -25,85 +25,38 @@
 		</mu-tabs>
 		style="background:3498db;"
 		-->
-		
-		<mu-card style="width: 100%;">
-			<mu-card-title title="产品介绍" :sub-title="ChoosedProduct.fnote == ''? '暂无介绍':ChoosedProduct.fnote"></mu-card-title>
-		</mu-card>
-			
-		<mu-container class="ProductInfo">
-			<mu-row gutter>
-				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-					<mu-col span="4">
-						产品
-					</mu-col>
-					<mu-col span="8">
-						<mu-select label="" v-model="ChoosedProduct.name" full-width @change="ChangeProduct">
-							<mu-option v-for="(Production,Idx) in productionList" :key="Idx" :label="Production.name" :value="Idx"></mu-option>
-						</mu-select>
-					</mu-col>
-				</mu-flex>
-			</mu-row>
-			<!--
-			<mu-row gutter>
-				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-					<mu-col span="4">
-						零售价
-					</mu-col>
-					<mu-col span="8">
-						<mu-text-field v-model="ChoosedProduct.pricel" disabled placeholder=""></mu-text-field>
-					</mu-col>
-				</mu-flex>
-			</mu-row>
-			<mu-row gutter>
-				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-					<mu-col span="4">
-						批发价
-					</mu-col>
-					<mu-col span="8">
-						<mu-text-field v-model="ChoosedProduct.pricep" disabled placeholder=""></mu-text-field>
-					</mu-col>
-				</mu-flex>
-			</mu-row>
-			-->
-			<mu-row gutter>
-				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-					<mu-col span="4">
-						输入数量
-					</mu-col>
-					<mu-col span="8">
-						<mu-text-field v-model="Amount"  placeholder="请输入数量"></mu-text-field>
-					</mu-col>
-				</mu-flex>
-			</mu-row>
-			<mu-row gutter v-if="Amount>0">
-				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-					<mu-col span="4">
-						单价
-					</mu-col>
-					<mu-col span="8">
-						<mu-text-field  disabled placeholder="" :value="Number(Amount)>Number(ChoosedProduct.amountb) ? ChoosedProduct.pricep: ChoosedProduct.pricel">{{}}</mu-text-field>
-					</mu-col>
-				</mu-flex>
-			</mu-row>
-			<!--
-			<mu-row gutter>
-				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-					<mu-col span="4" class="colorRed">
-						合计
-					</mu-col>
-					<mu-col span="8" class="TextRight colorRed">
-						￥ {{Amount}} x {{Number(Amount)>Number(ChoosedProduct.amountb) ? ChoosedProduct.pricep: ChoosedProduct.pricel}} = {{Total}}
-					</mu-col>
-				</mu-flex>
-			</mu-row>
-			-->
-		</mu-container>
+		<!--栏目-->
+		<mu-flex class="flex-wrapper ColumnTit" align-items="center">
+			<mu-flex class="flex-demo" justify-content="start" style="width:35%;">产品名</mu-flex>
+			<mu-flex class="flex-demo" justify-content="center" style="width:25%;">单价</mu-flex>
+			<mu-flex class="flex-demo" justify-content="start" style="width:15%;">数量</mu-flex>
+			<mu-flex class="flex-demo" justify-content="center" style="width:25%;">总价</mu-flex>
+		</mu-flex>
 
-		
+		<!--<mu-form :model="form" class="mu-demo-form"  label-width="100">
+
+
+		-->
+			<div class="demo-text ProductionList">
+					<mu-flex class="flex-wrapper ProductionItem" align-items="start" v-for="(Production,Idx) in productionList" :value="Production.id" :key="Production.id" >
+						<mu-flex class="flex-demo GoodsName" justify-content="start" style="width:35%;" >{{Production.name}}
+						</mu-flex>
+						<mu-flex class="flex-demo" justify-content="start" style="width:25%;">￥{{Number(AmountList[Idx])>Number(Production.amountb) ? Production.pricep : Production.pricel}} </mu-flex>
+
+						<mu-flex class="flex-demo" justify-content="center" style="width:15%;">
+							<mu-text-field  v-model="AmountList[Idx]" style="font-size:12px;"></mu-text-field>
+							</mu-form-item>
+						</mu-flex>
+
+						<mu-flex class="flex-demo" justify-content="center" style="width:25%;">￥{{Number(AmountList[Idx])>Number(Production.amountb) ? (Production.pricep * AmountList[Idx]): (Production.pricel * AmountList[Idx])}}
+						</mu-flex>
+					</mu-flex>
+			</div>
+		<!--</mu-form>-->
 		<!--footer-->
 		<div class="footer_price">
 			<mu-flex class="flex-wrapper" align-items="center">
-				<mu-flex class="flex-demo" justify-content="center" fill>￥{{Total}}</mu-flex>
+				<mu-flex class="flex-demo" justify-content="center" fill>￥{{TotalPrice}}</mu-flex>
 				<mu-flex class="flex-demo" justify-content="center" fill @click="ToBuy">立即购买</mu-flex>
 			</mu-flex>
 		</div>
@@ -125,34 +78,37 @@ import $ from 'jquery'
      	carouselImg5:'../../../static/img/carouse_5.png',
      	tab_cur: 0,
      	productionList:[],
-     	Amount:0,
-     	Total:0.00,
-     	ChoosedProduct:{
-     		'name':'',
-     		'pricel':0,
-     		'pricep':0,
-     		'amount':'',
-     		'amountb':0,
-     		'fnote':''
-     	},
+     	AmountList:[],
+     	form: {
+	        ChooseProduction: [],
+	        Amount:''
+	      }
       }
     },
     mounted(){
      
     },
     created() {
-   		this.GetProductions()
+   	this.GetProductions()
     },
     watch: {
-		Amount: {
+    	AmountList: {
 			handler(newVal, oldVal) {
-				this.TotalPrice()
+				this.TotalPriceChange()
 			},
-			deep: true
-		},
+			deep: true //对象内部属性的监听，关键。
+		}
       
     },
     computed: {
+    	TotalPrice:{
+            get: function () {
+              return this.$store.state.TotalPrice
+            },
+            set: function (newValue) {
+              this.$store.state.TotalPrice = newValue
+            }
+        },
     
     },
     components: {
@@ -160,26 +116,24 @@ import $ from 'jquery'
     },
     
     methods: {
-    	TotalPrice(){
-    		this.Total = Number(this.Amount)>Number(this.ChoosedProduct.amountb) ? (this.ChoosedProduct.pricep * this.Amount).toFixed(2): (this.ChoosedProduct.pricel * this.Amount).toFixed(2)
-    	},
-    	ChangeProduct(IDX){
-    		this.ChoosedProduct = {
-	     		'name':this.productionList[IDX].name,
-	     		'pricel':this.productionList[IDX].pricel,
-	     		'pricep':this.productionList[IDX].pricep,
-	     		'amount':this.Amount,
-	     		'amountb':this.productionList[IDX].amountb,
-	     		'fnote':this.productionList[IDX].fnote,
-	     		'ftaxrate':this.productionList[IDX].ftaxrate,
-     		}
-     		this.TotalPrice()
-     		this.$store.state.ChoosedProduction = this.ChoosedProduct
-     		this.$store.state.TotalPrice= this.Total
+    	ChangeAmount(e){
+    		console.log(e)
     	},
     	ToBuy(){
     		//console.log(this.productionList)
+    		//console.log(this.AmountList);
     		this.$router.push({name:'订单信息'})
+    	},
+    	TotalPriceChange(){
+    		let sum = 0
+    		this.AmountList.map((amount,idx)=>{
+    			//let total = Number(amount)>Number(this.productionList[idx].amountb) ? (this.productionList[idx].pricep * amount).toFixed(2) : (this.productionList[idx].pricel * amount).toFixed(2)
+    			let total = amount > this.productionList[idx].amountb ? amount * this.productionList[idx].pricep:amount * this.productionList[idx].pricel
+    			sum+=total
+    			//this.productionList[idx].amount = amount
+    		})
+
+    		this.$store.commit('T_PRICE_CHANGE',{TotalPrice: sum})
     	},
     	GetProductions(){
     		var that = this;
@@ -190,7 +144,7 @@ import $ from 'jquery'
 			tmpData+= '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"> ';
 			tmpData+= '<soap:Body> ';
 			tmpData+= '<JA_select xmlns="http://tempuri.org/"> ';                                     
-			tmpData+= '<FSql>select a.fnote,a.F_103,a.F_104,a.F_105,a.fnumber,a.fitemid,a.fname,a.ftaxrate,a.fseccoefficient,a.funitid,b.fname sup,c.fname jiliang from t_icitem a left join t_measureunit b on b.fmeasureunitid=a.fsecunitid left join t_measureunit c on c.fitemid=a.funitid where a.fitemid>0 and a.F_103>0 order by a.fnumber</FSql>'; 
+			tmpData+= '<FSql>select a.F_103,a.F_104,a.F_105,a.fnumber,a.fitemid,a.fname,a.ftaxrate,a.fseccoefficient,a.funitid,b.fname sup,c.fname jiliang from t_icitem a left join t_measureunit b on b.fmeasureunitid=a.fsecunitid left join t_measureunit c on c.fitemid=a.funitid where a.fitemid>0 order by a.fnumber</FSql>'; 
 			tmpData+= '<FTable>t_user</FTable>';                       
 			tmpData+= '</JA_select>';                   
 			tmpData+= '</soap:Body>';
@@ -227,11 +181,6 @@ import $ from 'jquery'
 					var Price_L = xmlDoc.getElementsByTagName('F_103'); //零售单价
 					var Price_P = xmlDoc.getElementsByTagName('F_104'); //批发价
 					var Amount_B = xmlDoc.getElementsByTagName('F_105'); //价量
-					var Fnote = xmlDoc.getElementsByTagName('fnote'); //介绍
-					var Ftaxrate = xmlDoc.getElementsByTagName('ftaxrate'); //税率
-
-					
-					
 
 					var Productions = []
 					var arr_Name = [];
@@ -240,8 +189,6 @@ import $ from 'jquery'
 					var arr_Price_P = [];
 					var arr_Amount = [];
 					var arr_Amount_B = [];
-					var arr_Fnote = [];
-					var arr_Ftaxrate = [];
 
 					for (var i = 0; i < Name.length; i++) {  
 					    arr_Name.push(Name[i].textContent); 
@@ -257,14 +204,8 @@ import $ from 'jquery'
 					    arr_Price_P.push(Price_P[i].textContent);  
 					}; 
 					for (var i = 0; i < Amount_B.length; i++) {  
-					    arr_Amount_B.push(Amount_B[i].textContent);  
+					    arr_Amount_B.push(Id[i].textContent);  
 					}; 
-					for (var i = 0; i < Fnote.length; i++) {  
-					    arr_Fnote.push(Fnote[i].textContent);  
-					};
-					for (var i = 0; i < Ftaxrate.length; i++) {  
-					    arr_Ftaxrate.push(Ftaxrate[i].textContent);  
-					};
 
 					arr_Name.map((item,idx)=>{
 						var Obj = {
@@ -274,14 +215,13 @@ import $ from 'jquery'
 							'pricep':arr_Price_P[idx],
 							'amount':arr_Amount[idx],
 							'amountb':arr_Amount_B[idx],
-							'fnote':arr_Fnote[idx],
-							'ftaxrate':arr_Ftaxrate[idx],
 						}
 						Productions.push(Obj)
 					})
-					console.log(arr_Fnote)
+
 					 
 					this.productionList = Productions
+					this.AmountList = arr_Amount
 
 					console.log(this.productionList);
 
@@ -304,12 +244,6 @@ import $ from 'jquery'
 
 </script>
 <style lang="scss" scoped>
-.ProductInfo{
-	margin-top:10px;
-	background:#fff;
-}
-
-
 .ColumnTit {
   width: 100%;
   height: 56px;
