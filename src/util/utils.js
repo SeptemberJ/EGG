@@ -2,6 +2,16 @@ import CryptoJS from 'crypto-js'
 import axios from 'axios'
 import store from '../store/store'
 
+
+//用于生成uuid
+export function CreatUUID() {
+    function S4() {
+        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    }
+    
+    return (S4()+S4()+S4()+S4()+S4()+S4()+S4()+S4());  //(S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    
+}
 export function MessageChange() {
   axios.get(R_PRE_URL+'/serMessageUnread.do?member_id='+store.state.userInfo.member_id
   ).then((res)=> {
@@ -253,22 +263,24 @@ export function ReadExcel() {
   return temp
 }
 
-// export function formatTime(date) {
-//   var year = date.getFullYear()
-//   var month = date.getMonth() + 1
-//   var day = date.getDate()
 
-//   var hour = date.getHours()
-//   var minute = date.getMinutes()
-//   var second = date.getSeconds()
+//
+export function formatTime (date){
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  const second = date.getSeconds()
 
-//   function formatNumber(n) {
-//     n = n.toString()
-//     return n[1] ? n : '0' + n
-//   }
+  function formatNumber (n) {
+	n = n.toString()
+	return n[1] ? n : '0' + n
+  }
+  return [year, month, day].map(formatNumber).join('-')
+}
 
-//   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
-// }
+
 
 //时间戳格式化（年月日时分秒）
   export function timestampToFormatTime(str){  

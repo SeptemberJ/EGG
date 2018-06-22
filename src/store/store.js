@@ -27,6 +27,7 @@ const store = new Vuex.Store({
 	    //loading:false,
 	    activeRoute:'首页', //导航显示路由名字
 	    TotalPrice:0,
+	    TotalAmount:0,
 	    ChoosedProduction:[],
     },
     // 公共

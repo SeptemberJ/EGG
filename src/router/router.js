@@ -5,6 +5,7 @@ import Store from '../store/store'
 import App from '../App'
 import Index from '../page/Index/Index'
 import OrderInfo from '../page/OrderInfo/Index'
+import Success from '../page/Success/Index'
 
 import {deviceInfo} from "../util/device"
 import {setCookie,getCookie} from '../util/utils'
@@ -19,6 +20,7 @@ const routes = [
     children: [
       {path: '/Index', name: '首页', component: Index},
       {path: '/OrderInfo', name: '订单信息', component: OrderInfo},
+      {path: '/Success', name: '提交成功', component: Success},
       //{path: '/Operator', name: '运营者平台', component: Operator,meta: {requireAuth: true}},
       {path:'*', redirect: '/Index'}
     ]

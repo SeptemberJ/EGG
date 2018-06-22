@@ -71,7 +71,7 @@
 						输入数量
 					</mu-col>
 					<mu-col span="8">
-						<mu-text-field v-model="Amount"  placeholder="请输入数量"></mu-text-field>
+						<mu-text-field type="number" v-model="Amount"  placeholder="请输入数量"></mu-text-field>
 					</mu-col>
 				</mu-flex>
 			</mu-row>
@@ -81,7 +81,7 @@
 						单价
 					</mu-col>
 					<mu-col span="8">
-						<mu-text-field  disabled placeholder="" :value="Number(Amount)>Number(ChoosedProduct.amountb) ? ChoosedProduct.pricep: ChoosedProduct.pricel">{{}}</mu-text-field>
+						<mu-text-field  disabled placeholder="" :value="Number(Amount)>Number(ChoosedProduct.amountb) ? ChoosedProduct.pricep: ChoosedProduct.pricel"></mu-text-field>
 					</mu-col>
 				</mu-flex>
 			</mu-row>
@@ -107,6 +107,10 @@
 				<mu-flex class="flex-demo" justify-content="center" fill @click="ToBuy">立即购买</mu-flex>
 			</mu-flex>
 		</div>
+		<mu-dialog title="提示" width="360" :open.sync="openSimple">
+		    {{TxtTips}}
+		    <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">确定</mu-button>
+		 </mu-dialog>
 	</div>
 </template>
 
@@ -118,6 +122,8 @@ import $ from 'jquery'
   export default{
     data: function () {
       return {
+      	TxtTips:'请选择产品并填入需要的数量!',
+      	openSimple: false,
       	carouselImg1:'../../../static/img/carouse_1.png',
       	carouselImg2:'../../../static/img/carouse_2.png',
      	carouselImg3:'../../../static/img/carouse_3.png',
@@ -147,6 +153,7 @@ import $ from 'jquery'
 		Amount: {
 			handler(newVal, oldVal) {
 				this.TotalPrice()
+				this.$store.state.TotalAmount= newVal
 			},
 			deep: true
 		},
@@ -160,8 +167,15 @@ import $ from 'jquery'
     },
     
     methods: {
+    	openSimpleDialog () {
+	      this.openSimple = true;
+	    },
+	    closeSimpleDialog () {
+	      this.openSimple = false;
+	    },
     	TotalPrice(){
     		this.Total = Number(this.Amount)>Number(this.ChoosedProduct.amountb) ? (this.ChoosedProduct.pricep * this.Amount).toFixed(2): (this.ChoosedProduct.pricel * this.Amount).toFixed(2)
+    		this.$store.state.TotalPrice= this.Total
     	},
     	ChangeProduct(IDX){
     		this.ChoosedProduct = {
@@ -175,10 +189,12 @@ import $ from 'jquery'
      		}
      		this.TotalPrice()
      		this.$store.state.ChoosedProduction = this.ChoosedProduct
-     		this.$store.state.TotalPrice= this.Total
     	},
     	ToBuy(){
-    		//console.log(this.productionList)
+    		if(this.Total <= 0){
+    			this.openSimpleDialog()
+    			return false
+    		}
     		this.$router.push({name:'订单信息'})
     	},
     	GetProductions(){
@@ -371,11 +387,12 @@ import $ from 'jquery'
   }
 }
 .mu-carousel{
-	height:200px !important;
+	height:250px !important;
 }
 .mu-carousel-item{
 	img{
 		width:100%;
+		height:auto;
 	}
 }
 
