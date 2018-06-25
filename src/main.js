@@ -71,7 +71,7 @@ Vue.http.options.emulateJSON = true;
 // });
 
 global.PRE_URL = ''
-global.R_PRE_URL = 'http://222.44.17.8:8085/znkzJK/' //'http://205.168.1.117:8082/'  
+global.R_PRE_URL = 'http://180.167.5.198' //'http://205.168.1.117:8082/'  
 
  global.API_PROXY = 'https://bird.ioliu.cn/v2/?url='                    // 线上代理地址
  global.LOCAL_API_PROXY = 'http://205.168.1.118/proxy.php?apiProxy='    // 本地代理地址，注意更改为你的主机ip
