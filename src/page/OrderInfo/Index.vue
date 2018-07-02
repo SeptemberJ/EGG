@@ -72,7 +72,7 @@
 					<mu-flex class="flex-demo" justify-content="start" fill>
 						<mu-form-item prop="amount" label="数量" label-width="50">
 							<mu-flex class="flex-demo" justify-content="end" fill>{{formDetail.amount}}</mu-flex>
-							<!--<mu-text-field v-model="formDetail.amount"></mu-text-field>-->
+							
 						</mu-form-item>
 					</mu-flex>
 					<mu-flex class="flex-demo" justify-content="start" fill>
@@ -121,9 +121,12 @@
 			  	</mu-flex>
 			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
 				    <mu-flex class="flex-demo" justify-content="start" fill>辅助</mu-flex>
+				    {{formTips.FZ}}
+				    <!--
 				    <mu-flex class="flex-demo" justify-content="end" style="width:100px;padding-top:15px;">
 				    	<mu-text-field v-model="formTips.FZ" style="font-size:12px;" placeholder="请输入辅助"></mu-text-field>
 				    </mu-flex>
+				    -->
 			  	</mu-flex>
 			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
 				    <mu-flex class="flex-demo" justify-content="start" fill>辅量</mu-flex>
@@ -180,7 +183,8 @@ import {formatTime ,CreatUUID} from '../../util/utils'
 			metering:'',//计量
 			amount:'',//数量
 			unitPrice:'',//单价
-			taxAmount:''//含税金额
+			taxAmount:'',//含税金额
+			//jiliang:''//数量计量
 		},
 		planInfo:[],
 		formTips:{
@@ -206,6 +210,8 @@ import {formatTime ,CreatUUID} from '../../util/utils'
    		this.formDetail.amount = this.$store.state.TotalAmount
    		this.formDetail.unitPrice = Number(this.$store.state.ChoosedProduction.amount)>Number(this.$store.state.ChoosedProduction.amountb) ? this.$store.state.ChoosedProduction.pricep : this.$store.state.ChoosedProduction.pricel
    		this.formDetail.taxAmount = this.$store.state.TotalPrice
+   		this.formTips.FZ = this.$store.state.ChoosedProduction.jiliang
+   		//this.formDetail.jiliang = this.$store.state.ChoosedProduction.jiliang
    		this.formTips.dateS = formatTime(new Date())
    		this.formTips.dateE = formatTime(new Date())
    		this.formTips.TotalNoTax = (Number(this.$store.state.TotalPrice)/(1+this.$store.state.ChoosedProduction.ftaxrate/100)).toFixed(2)
@@ -314,7 +320,8 @@ import {formatTime ,CreatUUID} from '../../util/utils'
     	SubmitFn(XMLStr1,XMLStr2){
     		this.CanWork = false
     		var that = this;
-			var method = 't_BOS200000000';                                     
+			var method = 't_BOS200000000';     
+			//var wsdlurl = 'http://180.167.5.198:8084/Service1.asmx';
 			var wsdlurl = '/api/Service1.asmx';           
 			var tmpNamespace = 'http://tempuri.org/';                 
 			var tmpData= '<?xml version="1.0" encoding="utf-8"?>'; 
@@ -360,7 +367,8 @@ import {formatTime ,CreatUUID} from '../../util/utils'
 
     	GetProductions(){
     		var that = this;
-			var method = 'JA_select';                                     
+			var method = 'JA_select';  
+			//var wsdlurl = 'http://180.167.5.198:8084/Service1.asmx';
 			var wsdlurl = '/api/Service1.asmx';           
 			var tmpNamespace = 'http://tempuri.org/';                 
 			var tmpData= '<?xml version="1.0" encoding="utf-8"?>'; 

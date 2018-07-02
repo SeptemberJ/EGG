@@ -32,6 +32,75 @@
 			
 		<mu-container class="ProductInfo">
 			<mu-row gutter>
+		    	<mu-col span="6">
+		    		<mu-row gutter>
+						<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
+							<mu-col span="4">
+								产品
+							</mu-col>
+							<mu-col span="8">
+								<mu-select label="" v-model="ChoosedProduct.name" full-width @change="ChangeProduct">
+									<mu-option v-for="(Production,Idx) in productionList" :key="Idx" :label="Production.name" :value="Idx"></mu-option>
+								</mu-select>
+							</mu-col>
+						</mu-flex>
+					</mu-row>
+		    	</mu-col>
+    			<mu-col span="6">
+    				<mu-row gutter>
+						<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
+							<mu-col span="4">
+								单价
+							</mu-col>
+							<mu-col span="8">
+								<mu-text-field  disabled placeholder="" :value="Number(Amount)>Number(ChoosedProduct.amountb) ? ChoosedProduct.pricep: ChoosedProduct.pricel"></mu-text-field>
+							</mu-col>
+						</mu-flex>
+					</mu-row>
+					<mu-row gutter>
+						<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
+						<mu-col span="12">批发价量：{{ChoosedProduct.amountb}}</mu-col>
+						</mu-flex>
+					</mu-row>
+					<mu-row gutter>
+						<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
+						<mu-col span="12">批发价：{{ChoosedProduct.pricep}}</mu-col>
+						</mu-flex>
+					</mu-row>
+    			</mu-col>
+			</mu-row>
+			<mu-row gutter style="margin-top:10px;">
+		    	<mu-col span="6">
+		    		<mu-row gutter>
+						<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
+							<mu-col span="4">
+								数量
+							</mu-col>
+							<mu-col span="6" style="overflow: hidden">
+								<mu-text-field type="number" v-model="Amount"  placeholder="请输入数量"></mu-text-field>
+								
+							</mu-col>
+							<mu-col span="2">
+								{{ChoosedProduct.jiliang}}
+							</mu-col>
+						</mu-flex>
+					</mu-row>
+		    	</mu-col>
+		    	<mu-col span="6">
+		    		<mu-row gutter>
+						<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
+							<mu-col span="4">
+								金额
+							</mu-col>
+							<mu-col span="8">
+								<mu-text-field  disabled placeholder="" :value="'￥' + Total"></mu-text-field>
+							</mu-col>
+						</mu-flex>
+					</mu-row>
+		    	</mu-col>
+		    </mu-row>
+		<!--
+			<mu-row gutter>
 				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
 					<mu-col span="4">
 						产品
@@ -43,35 +112,17 @@
 					</mu-col>
 				</mu-flex>
 			</mu-row>
-			<!--
-			<mu-row gutter>
-				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-					<mu-col span="4">
-						零售价
-					</mu-col>
-					<mu-col span="8">
-						<mu-text-field v-model="ChoosedProduct.pricel" disabled placeholder=""></mu-text-field>
-					</mu-col>
-				</mu-flex>
-			</mu-row>
-			<mu-row gutter>
-				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-					<mu-col span="4">
-						批发价
-					</mu-col>
-					<mu-col span="8">
-						<mu-text-field v-model="ChoosedProduct.pricep" disabled placeholder=""></mu-text-field>
-					</mu-col>
-				</mu-flex>
-			</mu-row>
-			-->
 			<mu-row gutter>
 				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
 					<mu-col span="4">
 						输入数量
 					</mu-col>
-					<mu-col span="8">
+					<mu-col span="6" style="overflow: hidden">
 						<mu-text-field type="number" v-model="Amount"  placeholder="请输入数量"></mu-text-field>
+						
+					</mu-col>
+					<mu-col span="2">
+						{{ChoosedProduct.jiliang}}
 					</mu-col>
 				</mu-flex>
 			</mu-row>
@@ -83,17 +134,7 @@
 					<mu-col span="8">
 						<mu-text-field  disabled placeholder="" :value="Number(Amount)>Number(ChoosedProduct.amountb) ? ChoosedProduct.pricep: ChoosedProduct.pricel"></mu-text-field>
 					</mu-col>
-				</mu-flex>
-			</mu-row>
-			<!--
-			<mu-row gutter>
-				<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-					<mu-col span="4" class="colorRed">
-						合计
-					</mu-col>
-					<mu-col span="8" class="TextRight colorRed">
-						￥ {{Amount}} x {{Number(Amount)>Number(ChoosedProduct.amountb) ? ChoosedProduct.pricep: ChoosedProduct.pricel}} = {{Total}}
-					</mu-col>
+
 				</mu-flex>
 			</mu-row>
 			-->
@@ -103,7 +144,7 @@
 		<!--footer-->
 		<div class="footer_price">
 			<mu-flex class="flex-wrapper" align-items="center">
-				<mu-flex class="flex-demo" justify-content="center" fill>￥{{Total}}</mu-flex>
+				<!--<mu-flex class="flex-demo" justify-content="center" fill>￥{{Total}}</mu-flex>-->
 				<mu-flex class="flex-demo" justify-content="center" fill @click="ToBuy">立即购买</mu-flex>
 			</mu-flex>
 		</div>
@@ -124,11 +165,11 @@ import $ from 'jquery'
       return {
       	TxtTips:'请选择产品并填入需要的数量!',
       	openSimple: false,
-      	carouselImg1:'../../../static/img/carouse_1.png',
-      	carouselImg2:'../../../static/img/carouse_2.png',
-     	carouselImg3:'../../../static/img/carouse_3.png',
-     	carouselImg4:'../../../static/img/carouse_4.png',
-     	carouselImg5:'../../../static/img/carouse_5.png',
+      	carouselImg1:'/static/img/carouse_1.png',
+      	carouselImg2:'/static/img/carouse_2.png',
+     	carouselImg3:'/static/img/carouse_3.png',
+     	carouselImg4:'/static/img/carouse_4.png',
+     	carouselImg5:'/static/img/carouse_5.png',
      	tab_cur: 0,
      	productionList:[],
      	Amount:0,
@@ -139,7 +180,8 @@ import $ from 'jquery'
      		'pricep':0,
      		'amount':'',
      		'amountb':0,
-     		'fnote':''
+     		'fnote':'',
+     		'jiliang':''
      	},
       }
     },
@@ -186,6 +228,7 @@ import $ from 'jquery'
 	     		'amountb':this.productionList[IDX].amountb,
 	     		'fnote':this.productionList[IDX].fnote,
 	     		'ftaxrate':this.productionList[IDX].ftaxrate,
+	     		'jiliang':this.productionList[IDX].jiliang,
      		}
      		this.TotalPrice()
      		this.$store.state.ChoosedProduction = this.ChoosedProduct
@@ -199,7 +242,8 @@ import $ from 'jquery'
     	},
     	GetProductions(){
     		var that = this;
-			var method = 'JA_select';                                     
+			var method = 'JA_select';    
+			//var wsdlurl = 'http://180.167.5.198:8084/Service1.asmx';                                 
 			var wsdlurl = '/api/Service1.asmx';//'http://180.167.5.198:8084/Service1.asmx';            
 			var tmpNamespace = 'http://tempuri.org/';                 
 			var tmpData= '<?xml version="1.0" encoding="utf-8"?>'; 
@@ -244,7 +288,8 @@ import $ from 'jquery'
 					var Price_P = xmlDoc.getElementsByTagName('F_104'); //批发价
 					var Amount_B = xmlDoc.getElementsByTagName('F_105'); //价量
 					var Fnote = xmlDoc.getElementsByTagName('fnote'); //介绍
-					var Ftaxrate = xmlDoc.getElementsByTagName('ftaxrate'); //税率
+					var Ftaxrate = xmlDoc.getElementsByTagName('ftaxrate'); //税率 
+					var Jiliang = xmlDoc.getElementsByTagName('jiliang');
 
 					
 					
@@ -258,6 +303,7 @@ import $ from 'jquery'
 					var arr_Amount_B = [];
 					var arr_Fnote = [];
 					var arr_Ftaxrate = [];
+					var arr_Jiliang = [];
 
 					for (var i = 0; i < Name.length; i++) {  
 					    arr_Name.push(Name[i].textContent); 
@@ -281,6 +327,9 @@ import $ from 'jquery'
 					for (var i = 0; i < Ftaxrate.length; i++) {  
 					    arr_Ftaxrate.push(Ftaxrate[i].textContent);  
 					};
+					for (var i = 0; i < Jiliang.length; i++) {  
+					    arr_Jiliang.push(Jiliang[i].textContent);  
+					};
 
 					arr_Name.map((item,idx)=>{
 						var Obj = {
@@ -292,6 +341,7 @@ import $ from 'jquery'
 							'amountb':arr_Amount_B[idx],
 							'fnote':arr_Fnote[idx],
 							'ftaxrate':arr_Ftaxrate[idx],
+							'jiliang':arr_Jiliang[idx],
 						}
 						Productions.push(Obj)
 					})
