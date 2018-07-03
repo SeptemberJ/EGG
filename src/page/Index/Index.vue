@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!--轮播-->
-		<mu-carousel :interval='3000'>
+		<mu-carousel :interval='30000'>
 		  <mu-carousel-item>
 		    <img :src="carouselImg1">
 		  </mu-carousel-item>
@@ -53,13 +53,13 @@
 								单价
 							</mu-col>
 							<mu-col span="8">
-								<mu-text-field  disabled placeholder="" :value="Number(Amount)>Number(ChoosedProduct.amountb) ? ChoosedProduct.pricep: ChoosedProduct.pricel"></mu-text-field>
+								<mu-text-field  disabled placeholder="" :value="Number(Amount)>=Number(ChoosedProduct.amountb) ? ChoosedProduct.pricep: ChoosedProduct.pricel"></mu-text-field>
 							</mu-col>
 						</mu-flex>
 					</mu-row>
 					<mu-row gutter>
 						<mu-flex class="" justify-content="start" align-items="center" style="width:100%;">
-						<mu-col span="12">批发价量：{{ChoosedProduct.amountb}}</mu-col>
+						<mu-col span="12">批发价量：{{ChoosedProduct.amountb}}{{ChoosedProduct.jiliang}}</mu-col>
 						</mu-flex>
 					</mu-row>
 					<mu-row gutter>
@@ -437,12 +437,12 @@ import $ from 'jquery'
   }
 }
 .mu-carousel{
-	height:250px !important;
+	height:180px !important;
 }
 .mu-carousel-item{
 	img{
 		width:100%;
-		height:auto;
+		height:100%;
 	}
 }
 

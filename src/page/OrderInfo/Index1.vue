@@ -22,6 +22,119 @@
 			      <mu-text-field v-model="formContact.address"></mu-text-field>
 			    </mu-form-item>
 			</mu-form>
+			<!--订单详情-->
+			<mu-form :model="formDetail" class="mu-demo-form" label-position="left" label-width="80">
+			    <div class="ColumnBar">
+					<span><i class="material-icons">assignment</i></span>
+					<span><b>订单详情</b></span>
+				</div>
+				<mu-flex class="flex-wrapper" align-items="center">
+					<mu-flex class="flex-demo" justify-content="start" fill>
+						<mu-form-item prop="address" label="币别">
+							<mu-text-field v-model="formDetail.currencyKind" disabled></mu-text-field>
+						</mu-form-item>
+					</mu-flex>
+					<mu-flex class="flex-demo" justify-content="start" fill>
+						<mu-form-item prop="address" label="汇率">
+							<mu-text-field v-model="formDetail.exchangeRate" disabled></mu-text-field>
+						</mu-form-item>
+					</mu-flex>
+				</mu-flex>
+				<mu-form-item prop="organization" label="组织机构">
+					<mu-text-field v-model="formDetail.organization"></mu-text-field>
+				</mu-form-item>
+				<mu-form-item prop="applicationDepartment" label="申请部门">
+					<mu-text-field v-model="formDetail.applicationDepartment"></mu-text-field>
+				</mu-form-item>
+				<mu-form-item prop="responsibilityDepartment" label="责任部门">
+					<mu-text-field v-model="formDetail.responsibilityDepartment"></mu-text-field>
+				</mu-form-item>
+				<mu-form-item prop="personLiable" label="责任人">
+					<mu-text-field v-model="formDetail.personLiable"></mu-text-field>
+				</mu-form-item>
+				<mu-form-item prop="maker" label="制单人">
+					<mu-text-field v-model="formDetail.maker"></mu-text-field>
+				</mu-form-item>
+				<mu-form-item prop="intercourse" label="往来">
+					<mu-text-field v-model="formDetail.intercourse"></mu-text-field>
+				</mu-form-item>
+				<mu-form-item prop="goods" label="内容">
+					<mu-text-field v-model="formDetail.goods"></mu-text-field>
+				</mu-form-item>
+				<mu-form-item prop="metering" label="计量">
+					<mu-text-field v-model="formDetail.metering"></mu-text-field>
+				</mu-form-item>
+				<mu-form-item prop="unitPrice" label="单价" label-width="50">
+					<mu-flex class="flex-demo" justify-content="end" fill>￥{{formDetail.unitPrice}}</mu-flex>
+					<!--<mu-text-field v-model="formDetail.unitPrice" ></mu-text-field>-->
+				</mu-form-item>
+				<mu-flex class="flex-wrapper" align-items="center">
+					<mu-flex class="flex-demo" justify-content="start" fill>
+						<mu-form-item prop="amount" label="数量" label-width="50">
+							<mu-flex class="flex-demo" justify-content="end" fill>{{formDetail.amount}}</mu-flex>
+							
+						</mu-form-item>
+					</mu-flex>
+					<mu-flex class="flex-demo" justify-content="start" fill>
+						<mu-form-item prop="taxAmount" label="含税金额">
+							<mu-flex class="flex-demo" justify-content="end" fill>￥{{formDetail.taxAmount}}</mu-flex>
+							<!--<mu-text-field v-model="formDetail.taxAmount"></mu-text-field>-->
+						</mu-form-item>
+					</mu-flex>
+				</mu-flex>
+				<!--tips-->
+				<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>备注</mu-flex>
+				    <mu-flex class="flex-demo" justify-content="end" style="width:180px;padding-top:15px;">
+				    	<mu-text-field v-model="formTips.note"  style="font-size:12px;" placeholder="请输入备注"></mu-text-field>
+				    </mu-flex>
+			  	</mu-flex>
+			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>启日期</mu-flex>
+				    <mu-flex class="flex-demo" justify-content="end" fill>{{formTips.dateS}}</mu-flex>
+			  	</mu-flex>
+			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>止日期</mu-flex>
+				    <mu-flex class="flex-demo" justify-content="end" fill>{{formTips.dateE}}</mu-flex>
+			  	</mu-flex>
+			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>计划预算进度</mu-flex>
+				    <mu-select label="" v-model="formTips.PlanProcess" style="width:180px;font-size:12px;" @change="ChangePlan">
+						<mu-option v-for="(Plan,Idx) in planInfo" :key="Idx" :label="Plan.PlanProcess" :value="Idx"></mu-option>
+					</mu-select>
+			  	</mu-flex>
+			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>计划</mu-flex>
+				    <mu-flex class="flex-demo" justify-content="end" fill>{{formTips.Plan}}</mu-flex>
+			  	</mu-flex>
+			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>预算</mu-flex>
+				    <mu-flex class="flex-demo" justify-content="end" fill>{{formTips.Budget}}</mu-flex>
+			  	</mu-flex>
+			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>计划预算额</mu-flex>
+				    <mu-flex class="flex-demo" justify-content="end" fill>{{formTips.PlanSum}}</mu-flex>
+			  	</mu-flex>
+			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>人民币不含税额</mu-flex>
+				    <mu-flex class="flex-demo" justify-content="end" fill>￥{{formTips.TotalNoTax}}</mu-flex>
+			  	</mu-flex>
+			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>辅助</mu-flex>
+				    {{formTips.FZ}}
+				    <!--
+				    <mu-flex class="flex-demo" justify-content="end" style="width:100px;padding-top:15px;">
+				    	<mu-text-field v-model="formTips.FZ" style="font-size:12px;" placeholder="请输入辅助"></mu-text-field>
+				    </mu-flex>
+				    -->
+			  	</mu-flex>
+			  	<mu-flex class="flex-wrapper tips" justify-content="between" align-items="center">
+				    <mu-flex class="flex-demo" justify-content="start" fill>辅量</mu-flex>
+				    <mu-flex class="flex-demo" justify-content="end" style="width:100px;padding-top:15px;">
+				    	<mu-text-field v-model="formTips.FL" style="font-size:12px;" placeholder="请输入辅量"></mu-text-field>
+				    </mu-flex>
+			  	</mu-flex>
+			</mu-form>
 			<mu-flex class="flex-wrapper marginTB_20" justify-content="center" align-items="center">
 			    <mu-button v-if="CanWork" color="primary" @click="SubmitOrder">提交</mu-button>
 			    <mu-button v-if="!CanWork" disabled>提交中...</mu-button>
@@ -66,7 +179,7 @@ import {formatTime ,CreatUUID} from '../../util/utils'
 			personLiable:'',//责任人
 			maker:'',//制单人
 			intercourse:'',//往来
-			goods:'',//内容 产品名
+			goods:'',//内容
 			metering:'',//计量
 			amount:'',//数量
 			unitPrice:'',//单价
@@ -98,7 +211,7 @@ import {formatTime ,CreatUUID} from '../../util/utils'
    		this.formDetail.unitPrice = Number(this.$store.state.ChoosedProduction.amount)>Number(this.$store.state.ChoosedProduction.amountb) ? this.$store.state.ChoosedProduction.pricep : this.$store.state.ChoosedProduction.pricel
    		this.formDetail.taxAmount = this.$store.state.TotalPrice
    		this.formTips.FZ = this.$store.state.ChoosedProduction.jiliang
-   		this.formDetail.goods = this.$store.state.ChoosedProduction.name
+   		//this.formDetail.jiliang = this.$store.state.ChoosedProduction.jiliang
    		this.formTips.dateS = formatTime(new Date())
    		this.formTips.dateE = formatTime(new Date())
    		this.formTips.TotalNoTax = (Number(this.$store.state.TotalPrice)/(1+this.$store.state.ChoosedProduction.ftaxrate/100)).toFixed(2)
@@ -135,13 +248,18 @@ import {formatTime ,CreatUUID} from '../../util/utils'
     		console.log(this.formDetail)
     		console.log(this.formTips)
     		//为空校验
-    		if(this.formContact.name == '' || this.formContact.tel == '' || this.formContact.address == ''){
+    		if(this.formContact.name == '' || this.formContact.tel == '' || this.formContact.address == '' || this.formDetail.organization == '' || this.formDetail.applicationDepartment == '' || this.formDetail.responsibilityDepartment == '' || this.formDetail.personLiable == '' || this.formDetail.maker == '' || this.formDetail.intercourse == '' || this.formDetail.goods == '' || this.formDetail.metering == '' || this.formTips.note == '' || this.formTips.FZ == '' || this.formTips.FL == ''){
     			this.TxtTips = '请填写相关信息!'
     			this.openSimpleDialog()
     			return false
     		}
     		if(!/^1[34578]\d{9}$/.test(this.formContact.tel)){
     			this.TxtTips = '请填写正确的手机号!'
+    			this.openSimpleDialog()
+    			return false
+    		}
+    		if(!this.formTips.PlanProcess){
+    			this.TxtTips = '请选择计划预算进度!'
     			this.openSimpleDialog()
     			return false
     		}

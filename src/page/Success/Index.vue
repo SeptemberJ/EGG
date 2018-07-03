@@ -24,7 +24,6 @@ import $ from 'jquery'
      
     },
     created() {
-   		this.GetProductions()
     },
     watch: {
       
